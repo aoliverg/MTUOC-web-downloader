@@ -59,7 +59,10 @@ def createDIRS(rootdir,URL):
     for i in range(0,len(subdirs)):
         try:
             tocreate=rootdir+"/"+"/".join(subdirs[0:i])
-            isExist = os.path.exists(tocreate)
+            if os.path.isfile(tocreate):
+                os.rename(tocreate,tocreate+"_copy")
+                
+            isExist = os.path.isdir(tocreate)
             if not isExist and len(tocreate)>0:
                os.makedirs(tocreate)
         except KeyboardInterrupt:
@@ -171,7 +174,7 @@ if outfile=="auto": outfile="text-"+domain_name+".txt"
 outdir=config["outdir"]
 if outdir=="auto":  outdir=domain_name
 
-source_dir="source-"+outdir
+source_dir=outdir
 
 timeout=float(config["timeout"])
 
