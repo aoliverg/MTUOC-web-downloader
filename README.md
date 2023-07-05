@@ -1,9 +1,16 @@
 # MTUOC-web-downloader
-A script to download a whole website and store it locally. 
+A set of scripts to download a whole website and store it locally. 
+
+# Introduction
+
+In this repository a set of scripts for downloading a whole website are available. To perform this task, two different strategies can be performed:
+
+- Starting from a URL, detect, store and follow all the links in the web page, and performing this until all the website is downloaded and stored localy, or a maximum number of webpages are downloaded, or a maximumn time is consumed. This methodology is implemented in the script MTUOC-web-downloader.py.
+- Retrieve all the sitemap of the website with MTUOC-sitemap.py and download all the URLs from the sitemap with MTUOC-download-from-sitemap.py
 
 # Prerequisites
 
-To run the program you should install the following prerequisites
+The programs are develped in Python version 3 and you need a Python 3 interpreter in your sistem. To run the programs you should install the following prerequisites
 
 '''
 beautifulsoup4
