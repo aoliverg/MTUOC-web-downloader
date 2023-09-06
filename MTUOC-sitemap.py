@@ -49,10 +49,13 @@ sortida=codecs.open(outfile,"w",encoding="utf-8")
 
 tree = sitemap_tree_for_homepage(URL)
 cont=0
+control=[]
 for page in tree.all_pages():
-    print(page.url)
-    sortida.write(page.url+"\n")
-    cont+=1
+    URL=page.url
+    if not URL in control:
+        sortida.write(page.url+"\n")
+        control.append(URL)
+        cont+=1
 
 if cont==0:
     cadena="###URL###"
