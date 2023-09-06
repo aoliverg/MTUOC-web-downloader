@@ -81,7 +81,7 @@ while moreelements>0:
                     response = requests.get(link)
                     page_source = response.content.decode("utf-8")
                     html=page_source
-                    text=h.handle(html)                   
+                    text=h.handle(html)  
                     soup = BeautifulSoup(html, "lxml")
                     newlinks=soup.findAll('a')
                     for l in newlinks:

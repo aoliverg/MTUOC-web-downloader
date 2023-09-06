@@ -12,11 +12,6 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import requests
 
-from random import randint
-from time import sleep
-
-import html2text
-
 
 def base_url(url, with_path=False):
     parsed = urllib.parse.urlparse(url)
@@ -41,9 +36,6 @@ entrada=codecs.open(sitemapfile,"r",encoding="utf-8")
 links=[]
 done=[]
 
-h = html2text.HTML2Text()
-h.ignore_links = True
-h.body_width = 0
 for linia in entrada:
     linia=linia.rstrip()
     if not linia in links and not linia.startswith("#"):
@@ -93,7 +85,7 @@ while moreelements>0:
                     response = requests.get(link)
                     page_source = response.content.decode("utf-8")
                     html=page_source
-                    text=h.handle(html)
+                    print(html)
                     soup = BeautifulSoup(html, "lxml")
                     newlinks=soup.findAll('a')
                     for l in newlinks:
@@ -105,11 +97,6 @@ while moreelements>0:
                     sortida=codecs.open(fullfile,"w",encoding="utf-8")
                     sortida.write(html+"\n")
                     sortida.close()
-                    fullfile=fullfile+".txt"
-                    sortida=codecs.open(fullfile,"w",encoding="utf-8")
-                    sortida.write(text+"\n")
-                    sortida.close()
-                    sleep(randint(0,1))
             except:
                 print("ERROR:",sys.exc_info())
         except:
