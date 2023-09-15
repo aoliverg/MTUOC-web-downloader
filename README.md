@@ -70,6 +70,7 @@ https://medlineplus.gov/organizations/orgbytopic_j.html
 https://medlineplus.gov/organizations/orgbytopic_p.html
 https://medlineplus.gov/organizations/orgbytopic_g.html
 ...
+```
 
 If no links are retrieved, the output file will contain the URL and some links obtained from a search in Google.
 
