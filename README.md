@@ -3,23 +3,23 @@ A set of scripts to download a whole website and store it locally.
 
 # 1. Introduction
 
-In this repository a set of scripts for downloading a whole website are available. To perform this task, two different strategies can be performed:
+In this repository a set of scripts for downloading a whole website are available. To perform this task, two different steps should be:
 
-- Starting from a URL, detect, store and follow all the links in the web page, and performing this until all the website is downloaded and stored localy, or a maximum number of webpages are downloaded, or a maximumn time is consumed. This methodology is implemented in the script MTUOC-web-downloader.py.
-- Retrieve all the sitemap of the website with MTUOC-sitemap.py and download all the URLs from the sitemap with MTUOC-download-from-sitemap.py
+- Retrieve all the sitemap of the website with MTUOC-sitemap.py
+- Download all the links in the sitemap, and while downloading, detecting new internal links to download. This can be performed by MTUOC-download-from-sitemap-selenium.py and MTUOC-download-from-sitemap-requests.py
 
-Not all strategies work for all websites, so you should try them and decide which is more suitable.
+Not all strategies (selenium and requests) work for all websites, so you should try them and decide which is more suitable. You may also find some websites from where you can't get any file.
 
 # 2. Prerequisites
 
-The programs are develped in Python version 3 and you need a Python 3 interpreter in your sistem. To run the programs you should install the following prerequisites
+The programs are develped in Python version 3 and you need a Python 3 interpreter in your system. To run the programs you should install the following prerequisites:
+
+For MTUOC-sitemap.py
 
 ```
-beautifulsoup4
-PyYAML
 requests
-selenium
-urllib3
+ultimate_sitemap_parser
+beautifulsoup4
 ```
 
 You can use pip or pip3 (depending on your installation) (use sudo if you plan to install in the whole system or use a virtual environment):
