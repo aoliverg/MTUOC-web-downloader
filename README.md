@@ -28,54 +28,34 @@ You can use pip or pip3 (depending on your installation) (use sudo if you plan t
 pip3 install beautifulsoup4 PyYAML requests selenium urllib3
 ```
 
-# 3. MTUOC-web-downloader
-## 3.1. Configuring the download task
+# 3. MTUOC-sitemap
 
-Before using the program you should edit the config-web-downloader.py to tell the websit to download and other configurations:
-
-```
-url: https://webtodownload.com
-action: start
-#one of start/resume
-
-linksfile: auto
-outfile: auto
-outdir: auto
-
-timeout: 10
-maxtime: -1
-#-1 means no limit
-max_urls: -1
-#-1 means no limit
-```
-
-This file can be renamed if needed.
-
-## 3.2. Downloading the website
-
-To download the website, if you want to use the config-web-downloader.yaml file you can simply write in terminal (use python3 or python depending on your installation):
+You can use the option -h to get the help of the program:
 
 ```
-python3 MTUOC-web-downloader.py
+python3 MTUOC-sitemap.py -h
+usage: MTUOC-sitemap.py [-h] -u URL [-p PREFIX] [-n FILENAME]
+
+MTUOC program to get the links from a website.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u URL, --url URL     The URL of the website to explore.
+  -p PREFIX, --prefix PREFIX
+                        The prefix to use for the file containing the links. The full name will
+                        contain the prefix and the domain.
+  -n FILENAME, --name FILENAME
+                        The name of the file containing the links. This option overrides -p/--prefix.
 ```
 
-If you have renamed the config-web-downloader.yaml file, you can speciy it in the command:
+If we want to get the sitemap of a website, let's say https://medlineplus.gov/, we can run MTUOC-sitemap.py giving the URL with the option -u or --url. If we don't specify a prefix or a name, an automatic name for the sitemap file will be generated ("sitemap-"+domain+".txt")
 
 ```
-python3 MTUOC-web-downloader.py -c yourOwnConfig.yaml
+python3 MTUOC-sitemap.py -u https://medlineplus.gov
 ```
+The sitemap would be named: sitemap-medlineplus_gov.txt We can specify a different prefix with the -p/--prefix option or a name with the -n/--name option. The sitemap will contain "all" the links in the webpage, or at least some of them.
 
-# 4. Download from sitemap
-
-## 4.1. Getting the sitemap of the site
-
-If we want to get the sitemap of a website, let's say https://medlineplus.gov/, we can run MTUOC-sitemap.py giving as a first parameter the URL and as the second parameter the file where the sitemap will be stored:
-
-```
-python3 MTUOC-sitemap.py https://medlineplus.gov/ sitemapMedline.txt
-```
-
-Now, in sitemapMedline.txt we have all the links in the website (the links found in the sitemap):
+Now, in sitemap-medlineplus_gov.txt we have all the links in the website (the links found in the sitemap):
 
 ```
 https://medlineplus.gov/all_easytoread.html
@@ -90,11 +70,13 @@ https://medlineplus.gov/organizations/orgbytopic_j.html
 https://medlineplus.gov/organizations/orgbytopic_p.html
 https://medlineplus.gov/organizations/orgbytopic_g.html
 ...
-```
+
+If no links are retrieved, the output file will contain the URL and some links obtained from a search in Google.
 
 Sometimes these sitemaps are too large. You can edit the file, copy desired links to another file, use grep or whatever to adapt the results to your needs.
 
-## 4.2. Downloading the links in the sitemap
+# 4. MTUOC-download-from-sitemap
+
 
 To download the linkgs in the sitemap file, or the edited version of the sitemap, you can run MTUOC-download-from-sitemap.py giving the file containing the sitemap and the directory where the website will be downloaded as parameters:
 
