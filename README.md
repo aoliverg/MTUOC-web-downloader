@@ -22,6 +22,21 @@ ultimate_sitemap_parser
 beautifulsoup4
 ```
 
+For MTUOC-donwload-from-sitemap-selenium.py
+
+```
+requests
+selenium
+beautifulsoup4
+```
+
+For MTUOC-donwload-from-sitemap-requests.py
+
+```
+requests
+beautifulsoup4
+```
+
 You can use pip or pip3 (depending on your installation) (use sudo if you plan to install in the whole system or use a virtual environment):
 
 ```
@@ -78,12 +93,38 @@ Sometimes these sitemaps are too large. You can edit the file, copy desired link
 
 # 4. MTUOC-download-from-sitemap
 
+This program is distributed in two diferent versions: MTUOC-download-from-sitemap-selenium.py (using selenium) and MTUOC-download-from-sitemap-requests.py (using requests). Depending on the website to download one version can work better than the other. The use of the selenium version is recommended as a first try. These two programs are used in the exact same way. The explanation is given for the selenium version, but the parameters and options are exactly the same for the requests versions. 
 
-To download the linkgs in the sitemap file, or the edited version of the sitemap, you can run MTUOC-download-from-sitemap.py giving the file containing the sitemap and the directory where the website will be downloaded as parameters:
+The program needs a text file contaning a list of links to download. This list can be constructed with the MTUOC-sitemap.py program. If you don't have such a list, you can create a text file with the URL of the website to download. The program will download all the links in the file and for each link it will try to detect new internal links to download.
+
+The program has the option -h that shows the help of the program:
 
 ```
-python3 MTUOC-download-from-sitemap.py sitemapMedline.txt  dirMedline
+python3 MTUOC-download-from-sitemap-selenium.py -h
+usage: MTUOC-download-from-sitemap-selenium.py [-h] -f SITEMAPFILE [-d OUTDIR]
+
+MTUOC program to get the links from a website.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f SITEMAPFILE, --file SITEMAPFILE
+                        The file containing the links to download (the sitemap).
+  -d OUTDIR, --directory OUTDIR
+                        The directory where the downladed files will be stored. If not provided,
+                        "download" subdirectory will be used.
 ```
 
-Under the directory dirMedline all the structure and files of the website will be stored.
+To donwload the links contained in the file sitemap.txt we can write:
+
+```
+python3 MTUOC-download-from-sitemap-selenium.py -f sitemap.txt
+```
+
+As no directoy is provided, the files will be stored in a "donwload" directory under the current directory. We can provide an specific directory with the option -d:
+
+```
+python3 MTUOC-download-from-sitemap-selenium.py -f sitemap.txt -d webfiles
+```
+
+
 
