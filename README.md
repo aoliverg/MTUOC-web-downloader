@@ -37,10 +37,24 @@ requests
 beautifulsoup4
 ```
 
+For MTUOC-downloadedweb2text.py
+
+```
+dewiki
+fasttext
+regex
+textract
+lxml
+html2text
+beautifulsoup4
+langcodes
+language_data
+```
+
 You can use pip or pip3 (depending on your installation) (use sudo if you plan to install in the whole system or use a virtual environment):
 
 ```
-pip3 install beautifulsoup4 PyYAML requests selenium urllib3
+pip3 install beautifulsoup4 dewiki fasttext html2text langcodes language_data lxml regex requests selenium textract ultimate_sitemap_parser
 ```
 
 # 3. MTUOC-sitemap
