@@ -51,11 +51,14 @@ langcodes
 language_data
 ```
 
+To run this program you also need a FastText language identification model. By defaul, lid.176.bin is used. You can download this model from: https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin 
+
 You can use pip or pip3 (depending on your installation) (use sudo if you plan to install in the whole system or use a virtual environment):
 
 ```
 pip3 install beautifulsoup4 dewiki fasttext html2text langcodes language_data lxml regex requests selenium textract ultimate_sitemap_parser
 ```
+
 
 # 3. MTUOC-sitemap
 
