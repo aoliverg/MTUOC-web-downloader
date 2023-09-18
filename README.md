@@ -53,6 +53,7 @@ language_data
 
 To run this program you also need a FastText language identification model. By defaul, lid.176.bin is used. You can download this model from: https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin 
 
+
 You can use pip or pip3 (depending on your installation) (use sudo if you plan to install in the whole system or use a virtual environment):
 
 ```
@@ -142,6 +143,35 @@ As no directoy is provided, the files will be stored in a "donwload" directory u
 ```
 python3 MTUOC-download-from-sitemap-selenium.py -f sitemap.txt -d webfiles
 ```
+
+# 5. MTUOC-downloadedweb2text.py
+
+This programs convert the downloaded files (htmls, pdfs and docx) to segmented text. It converts all the text in a given language into a single text file. Using the -h option you can get the help of the program:
+
+```
+python3 MTUOC-downloadedweb2text.py -h
+usage: MTUOC-downloadedweb2text.py [-h] -d DIRENTRADA [-p PREFFIX] [--ldm LANGDETMODEL] [-s SRXFILE]
+
+MTUOC program to convert a downloaded web into text.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DIRENTRADA, --directory DIRENTRADA
+                        The directory where the downladed files are stored.
+  -p PREFFIX, --preffix PREFFIX
+                        The preffix for the text files.
+  --ldm LANGDETMODEL    The fastText language detection model. By default lid.176.bin.
+  -s SRXFILE, --srx SRXFILE
+                        The SRX file containing the segmentation rules. By default segment.srx.
+```
+
+For example, to convert all the files in the directori "download" into text files named converted-en.txt (for English), converted-es.txt (for Spanish), converted-fr.txt (for French) and so on, you can write:
+
+```
+python3 MTUOC-downloadedweb2text.py -d download -o converted
+```
+
+It will use the lid.176.bin language detection model, that you can download from https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin , or you can specify the language detection model with the --ldm option. By default it uses the SRX file segment.srx for segmentation, but you can specify any other SRX file with the option -s.
 
 
 
