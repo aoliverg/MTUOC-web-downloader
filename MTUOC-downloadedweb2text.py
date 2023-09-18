@@ -225,7 +225,7 @@ for path, currentDirectory, files in os.walk(direntrada):
                 text = textract.process(fullpath, extension='docx').decode("utf-8", "replace")
             
             
-            elif file.endswith(".htm") or file.endswith(".html"):
+            else:
                 print("Converting html: ",file)
                 
                 content=open(fullpath,"r").read()
