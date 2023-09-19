@@ -56,7 +56,7 @@ parser.add_argument('-n','--name', action="store", dest="filename", help='The na
 args = parser.parse_args()
 
 URL=args.URL
-
+if not URL.startswith("http"): URL="http://"+URL
 
 if not args.filename==None:
     outfile=args.filename
@@ -69,7 +69,7 @@ else:
     suffix=domain.replace(".","_")
     outfile="sitemap-"+suffix+".txt"
 
-if not URL.startswith("http"): URL="http://"+URL
+
 
 response = requests.get(URL)
 
