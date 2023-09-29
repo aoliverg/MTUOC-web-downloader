@@ -77,6 +77,8 @@ browser = webdriver.Firefox(options=opts)
 browser.set_page_load_timeout(5)  
 
 entrada=codecs.open(sitemapfile,"r",encoding="utf-8")
+logfilename="downloadlog-"+sitemapfile.replace("sitemap-","")
+sortidalog=codecs.open(logfilename,"w",encoding="utf-8")
 
 links=[]
 done=[]
@@ -90,7 +92,9 @@ for linia in entrada:
 
 moreelements=len(links)
 while moreelements>0:
+    cadenalog=[]
     try:
+        
         link=links.pop(0)
         done.append(link)
         baseurl=base_url(link)
@@ -104,41 +108,58 @@ while moreelements>0:
         fullfilename=os.path.join(dir1,filename)
         file_extension = pathlib.Path(fullfilename).suffix
         if file_extension in fileextensions:
+            cadenalog.append("DOWNLOADING")
+            cadenalog.append(link)
+            cadenalog.append(fullfilename)
             print("DOWNLOADING: ",link," to ", fullfilename)
             response = requests.get(link) 
             document = open(fullfilename, 'wb')
             document.write(response.content)
             document.close()
+            cadenalog.append("SUCCESS")
         else:
             print("GETTING: ",link)
+            cadenalog.append("GETTING")
+            cadenalog.append(link)
+            
             browser.get(link)
             delay = 3
             html = browser.page_source
-            response = requests.get(link)
-            page_source = response.content.decode("utf-8")
-            html=page_source
+            #response = requests.get(link)
+            #page_source = response.content.decode("utf-8")
+            #html=page_source
             #text=h.handle(html)
             soup = BeautifulSoup(html, "lxml")
             newlinks=soup.findAll('a')
+
             for l in newlinks:
                 l2=l.get('href')
                 if not l2==None and l2.startswith(baseurl):
                     if not l2 in links and not l2 in done:
+                        print("NEWLINK:",l2)
                         links.append(l2)
             file_extension = pathlib.Path(fullfilename).suffix
+            
             if not file_extension in htmlextensions:
                 fullfilename=fullfilename+".html"
+            cadenalog.append(fullfilename)
             sortida=codecs.open(fullfilename,"w",encoding="utf-8")
             sortida.write(html+"\n")
             sortida.close()
+            cadenalog.append("SUCCESS")
             sleep(randint(minwait,maxwait))
         print("DONE: ",len(done),"TO DOWNLOAD:",moreelements)
     
     except:
         print("ERROR:",sys.exc_info())
+        cadenalog.append("ERROR")
+        cadenalog.append(str(sys.exc_info()[0]))
     moreelements=len(links)
-    
-    
+    cadenalog="\t".join(cadenalog)
+    sortidalog.write(cadenalog+"\n")
+    sortidalog.close()
+    sortidalog=codecs.open(logfilename,"a",encoding="utf-8")
+sortidalog.close()    
 
     
     
