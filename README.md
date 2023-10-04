@@ -22,20 +22,21 @@ ultimate_sitemap_parser
 beautifulsoup4
 ```
 
-For MTUOC-donwload-from-sitemap-selenium.py
+For MTUOC-donwload-from-sitemap.py:
+
+If you DON'T plan to use the Selenium strategy, these requisites are enough:
 
 ```
 requests
+beautifulsoup4
+```
+
+If you plan to use the Selenium strategy, these requisites are also needed:
+
+```
 selenium
-beautifulsoup4
 ```
 
-For MTUOC-donwload-from-sitemap-requests.py
-
-```
-requests
-beautifulsoup4
-```
 
 For MTUOC-downloadedweb2text.py
 
@@ -51,7 +52,7 @@ langcodes
 language_data
 ```
 
-To run this program you also need a FastText language identification model. By defaul, lid.176.bin is used. You can download this model from: https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin 
+To run this program you also need a FastText language identification model. By defaul, lid.176.bin is used. You can download this model from: [https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin). 
 
 
 You can use pip or pip3 (depending on your installation) (use sudo if you plan to install in the whole system or use a virtual environment):
@@ -67,7 +68,7 @@ You can use the option -h to get the help of the program:
 
 ```
 python3 MTUOC-sitemap.py -h
-usage: MTUOC-sitemap.py [-h] -u URL [-p PREFIX] [-n FILENAME]
+[usage: MTUOC-sitemap.py [-h] -u URL [-p PREFIX] [-n FILENAME]
 
 MTUOC program to get the links from a website.
 
@@ -78,7 +79,7 @@ optional arguments:
                         The prefix to use for the file containing the links. The full name will
                         contain the prefix and the domain.
   -n FILENAME, --name FILENAME
-                        The name of the file containing the links. This option overrides -p/--prefix.
+                        The name of the file containing the links. This option overrides -p/--prefix.]
 ```
 
 If we want to get the sitemap of a website, let's say https://medlineplus.gov/, we can run MTUOC-sitemap.py giving the URL with the option -u or --url. If we don't specify a prefix or a name, an automatic name for the sitemap file will be generated ("sitemap-"+domain+".txt")
@@ -111,15 +112,16 @@ Sometimes these sitemaps are too large. You can edit the file, copy desired link
 
 # 4. MTUOC-download-from-sitemap
 
-This program is distributed in two diferent versions: MTUOC-download-from-sitemap-selenium.py (using selenium) and MTUOC-download-from-sitemap-requests.py (using requests). Depending on the website to download one version can work better than the other. The use of the selenium version is recommended as a first try. These two programs are used in the exact same way. The explanation is given for the selenium version, but the parameters and options are exactly the same for the requests versions. 
+This program can use two diferents strategies to download the websites: Selenium (the default one) or requests. Depending on the website to download one version can work better than the other. The use of the selenium strategy is recommended as a first try. 
 
 The program needs a text file contaning a list of links to download. This list can be constructed with the MTUOC-sitemap.py program. If you don't have such a list, you can create a text file with the URL of the website to download. The program will download all the links in the file and for each link it will try to detect new internal links to download.
 
 The program has the option -h that shows the help of the program:
 
 ```
-python3 MTUOC-download-from-sitemap-selenium.py -h
-usage: MTUOC-download-from-sitemap-selenium.py [-h] -f SITEMAPFILE [-d OUTDIR]
+usage: MTUOC-download-from-sitemap.py [-h] -f SITEMAPFILE [-d OUTDIR] [-s STRATEGY]
+                                      [--minwait MINWAIT] [--maxwait MAXWAIT]
+                                      [--maxdowload MAXDOWLOAD] [--timeout TIMEOUT]
 
 MTUOC program to get the links from a website.
 
@@ -130,6 +132,13 @@ optional arguments:
   -d OUTDIR, --directory OUTDIR
                         The directory where the downladed files will be stored. If not provided,
                         "download" subdirectory will be used.
+  -s STRATEGY, --strategy STRATEGY
+                        selenium (default) / requests.
+  --minwait MINWAIT     The minimum time to wait between downloads. Default 0.
+  --maxwait MAXWAIT     The maximum time to wait between downloads. Defautt 2 seconds.
+  --maxdowload MAXDOWLOAD
+                        The maximum number of webpages to download. Defautt 10,000.
+  --timeout TIMEOUT     The timeout for Selenium. Defautt 10
 ```
 
 To donwload the links contained in the file sitemap.txt we can write:
