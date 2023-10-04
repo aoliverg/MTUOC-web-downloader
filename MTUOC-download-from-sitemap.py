@@ -32,6 +32,7 @@ import argparse
 
 
 from urllib.parse import urlparse
+from urllib.parse import urljoin
 
 import pathlib
 
@@ -55,6 +56,7 @@ parser.add_argument('-s','--strategy', action="store", dest="strategy", help='se
 parser.add_argument('--minwait', action="store", dest="minwait", help='The minimum time to wait between downloads. Default 0.',required=False, default=0)
 parser.add_argument('--maxwait', action="store", dest="maxwait", help='The maximum time to wait between downloads. Defautt 2 seconds.',required=False, default=2)
 parser.add_argument('--maxdowload', action="store", dest="maxdowload", help='The maximum number of webpages to download. Defautt 10,000.',required=False, default=10000)
+parser.add_argument('--timeout', action="store", dest="timeout", help='The timeout for Selenium. Defautt 10',required=False, default=10)
 
 args = parser.parse_args()
 
@@ -64,6 +66,7 @@ maxwait=args.maxwait
 maxdowload=args.maxdowload
 outdir=args.outdir
 strategy=args.strategy
+timeout=args.timeout
 
 if not strategy=="selenium" and not strategy=="requests":
     print("ERROR: Strategy should be: selenium or requests")
@@ -81,7 +84,7 @@ if strategy=="selenium":
     opts.add_argument('-headless')
     opts.accept_untrusted_certs = True
     browser = webdriver.Firefox(options=opts)
-    browser.set_page_load_timeout(5)  
+    browser.set_page_load_timeout(timeout)  
 
 entrada=codecs.open(sitemapfile,"r",encoding="utf-8")
 logfilename="downloadlog-"+sitemapfile.replace("sitemap-","")
@@ -117,7 +120,7 @@ while moreelements>0:
         file_extension = pathlib.Path(fullfilename).suffix
         if file_extension in fileextensions:
             cadenalog.append("DOWNLOADING")
-            cadenalog.append(link)
+            cadenalog.append(str(link))
             cadenalog.append(fullfilename)
             print("DOWNLOADING: ",link," to ", fullfilename)
             response = requests.get(link) 
@@ -145,6 +148,8 @@ while moreelements>0:
 
             for l in newlinks:
                 l2=l.get('href')
+                if l2.startswith("/"):
+                    l2=urljoin(baseurl,l2)
                 if not l2==None and l2.startswith(baseurl):
                     if not l2 in links and not l2 in done:
                         print("NEWLINK:",l2)
@@ -153,6 +158,7 @@ while moreelements>0:
             
             if not file_extension in htmlextensions:
                 fullfilename=fullfilename+".html"
+            fullfilename=fullfilename.replace("?","_").replace("<","_")
             cadenalog.append(fullfilename)
             sortida=codecs.open(fullfilename,"w",encoding="utf-8")
             sortida.write(html+"\n")
@@ -161,7 +167,7 @@ while moreelements>0:
             cadenalog.append(strategy)
             totaldownloaded+=1
             sleep(randint(minwait,maxwait))
-        print("DONE: ",len(done),"TO DOWNLOAD:",moreelements)
+        print("DONE: ",str(len(done)),"TO DOWNLOAD:",str(moreelements))
     
     except:
         print("ERROR:",sys.exc_info())
