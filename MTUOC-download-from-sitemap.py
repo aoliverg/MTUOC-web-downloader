@@ -148,7 +148,7 @@ while moreelements>0:
 
             for l in newlinks:
                 l2=l.get('href')
-                if l2.startswith("/"):
+                if not l2==None and l2.startswith("/"):
                     l2=urljoin(baseurl,l2)
                 if not l2==None and l2.startswith(baseurl):
                     if not l2 in links and not l2 in done:
