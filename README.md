@@ -134,6 +134,7 @@ optional arguments:
                         "download" subdirectory will be used.
   -s STRATEGY, --strategy STRATEGY
                         selenium (default) / requests.
+  --nofollow            Do not follow new links.
   --minwait MINWAIT     The minimum time to wait between downloads. Default 0.
   --maxwait MAXWAIT     The maximum time to wait between downloads. Defautt 2 seconds.
   --maxdowload MAXDOWLOAD
@@ -141,17 +142,24 @@ optional arguments:
   --timeout TIMEOUT     The timeout for Selenium. Defautt 10
 ```
 
-To donwload the links contained in the file sitemap.txt we can write:
+To download the links contained in the file sitemap.txt we can write:
 
 ```
 python3 MTUOC-download-from-sitemap-selenium.py -f sitemap.txt
 ```
 
-As no directoy is provided, the files will be stored in a "donwload" directory under the current directory. We can provide an specific directory with the option -d:
+As no directoy is provided, the files will be stored in a "download" directory under the current directory. We can provide an specific directory with the option -d:
 
 ```
 python3 MTUOC-download-from-sitemap-selenium.py -f sitemap.txt -d webfiles
 ```
+
+By default the program tries to find new links in each downloaded file. If the links are internal to the same URL, they are stored and downloaded. If you want to download only the pages in the sitemap and don't want to discover and follow new links, use the option --nofollow.
+
+```
+python3 MTUOC-download-from-sitemap-selenium.py -f sitemap.txt --nofollow
+```
+
 
 # 5. MTUOC-downloadedweb2text.py
 
