@@ -53,6 +53,7 @@ parser = argparse.ArgumentParser(description='MTUOC program to get the links fro
 parser.add_argument('-f','--file', action="store", dest="sitemapfile", help='The file containing the links to download (the sitemap).',required=True)
 parser.add_argument('-d','--directory', action="store", dest="outdir", help='The directory where the downladed files will be stored. If not provided, "download" subdirectory will be used.',required=False, default="download")
 parser.add_argument('-s','--strategy', action="store", dest="strategy", help='selenium (default) / requests.',required=False, default="selenium")
+parser.add_argument('--nofollow', action="store_true", dest="nofollow", help='Do not follow new links.',required=False, default=False)
 parser.add_argument('--minwait', action="store", dest="minwait", help='The minimum time to wait between downloads. Default 0.',required=False, default=0)
 parser.add_argument('--maxwait', action="store", dest="maxwait", help='The maximum time to wait between downloads. Defautt 2 seconds.',required=False, default=2)
 parser.add_argument('--maxdowload', action="store", dest="maxdowload", help='The maximum number of webpages to download. Defautt 10,000.',required=False, default=10000)
@@ -61,6 +62,7 @@ parser.add_argument('--timeout', action="store", dest="timeout", help='The timeo
 args = parser.parse_args()
 
 sitemapfile=args.sitemapfile
+nofollow=args.nofollow
 minwait=args.minwait
 maxwait=args.maxwait
 maxdowload=args.maxdowload
@@ -145,15 +147,15 @@ while moreelements>0:
             #text=h.handle(html)
             soup = BeautifulSoup(html, "lxml")
             newlinks=soup.findAll('a')
-
-            for l in newlinks:
-                l2=l.get('href')
-                if not l2==None and l2.startswith("/"):
-                    l2=urljoin(baseurl,l2)
-                if not l2==None and l2.startswith(baseurl):
-                    if not l2 in links and not l2 in done:
-                        print("NEWLINK:",l2)
-                        links.append(l2)
+            if not nofollow:
+                for l in newlinks:
+                    l2=l.get('href')
+                    if not l2==None and l2.startswith("/"):
+                        l2=urljoin(baseurl,l2)
+                    if not l2==None and l2.startswith(baseurl):
+                        if not l2 in links and not l2 in done:
+                            print("NEWLINK:",l2)
+                            links.append(l2)
             file_extension = pathlib.Path(fullfilename).suffix
             
             if not file_extension in htmlextensions:
