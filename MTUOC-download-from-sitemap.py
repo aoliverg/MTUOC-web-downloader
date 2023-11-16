@@ -56,7 +56,7 @@ parser.add_argument('-s','--strategy', action="store", dest="strategy", help='se
 parser.add_argument('--nofollow', action="store_true", dest="nofollow", help='Do not follow new links.',required=False, default=False)
 parser.add_argument('--minwait', action="store", dest="minwait", help='The minimum time to wait between downloads. Default 0.',required=False, default=0)
 parser.add_argument('--maxwait', action="store", dest="maxwait", help='The maximum time to wait between downloads. Defautt 2 seconds.',required=False, default=2)
-parser.add_argument('--maxdowload', action="store", dest="maxdowload", help='The maximum number of webpages to download. Defautt 10,000.',required=False, default=10000)
+parser.add_argument('--maxdownload', action="store", dest="maxdowload", help='The maximum number of webpages to download. Defautt 1,000,000.',required=False, default=1000000)
 parser.add_argument('--timeout', action="store", dest="timeout", help='The timeout for Selenium. Defautt 10',required=False, default=10)
 
 args = parser.parse_args()
@@ -65,7 +65,7 @@ sitemapfile=args.sitemapfile
 nofollow=args.nofollow
 minwait=args.minwait
 maxwait=args.maxwait
-maxdowload=args.maxdowload
+maxdowload=int(args.maxdowload)
 outdir=args.outdir
 strategy=args.strategy
 timeout=args.timeout
