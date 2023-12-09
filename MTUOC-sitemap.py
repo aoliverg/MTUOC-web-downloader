@@ -47,58 +47,64 @@ def searchGoogle(query):
       #print(title, link, sep='\n')
         links.append(link)
     return(links)
+
+def get_sitemap(URL, outfile):
+    if not URL.startswith("http"): URL="http://"+URL
+    response = requests.get(URL)
+
+    if response.status_code == 200:
+        print('Web site exists')
+        URL=response.url
+    else:
+        print('Web site does not exist') 
+        sys.exit()
+
+    sortida=codecs.open(outfile,"w",encoding="utf-8")
+
+    tree = sitemap_tree_for_homepage(URL)
+    cont=0
+    control=[]
+    for page in tree.all_pages():
+        URL=page.url
+        if not URL in control:
+            sortida.write(page.url+"\n")
+            control.append(URL)
+            cont+=1
+
+    if cont==0:
+        cadena="###URL###"
+        sortida.write(cadena+"\n")
+        sortida.write(URL+"\n")
+        
+        cadena="###Google###"
+        sortida.write(cadena+"\n")
+        googlelinks=searchGoogle(URL)
+        for gl in googlelinks:
+            sortida.write(gl+"\n")
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description='MTUOC program to get the links from a website.')
+    parser.add_argument('-u','--url', action="store", dest="URL", help='The URL of the website to explore.',required=True)
+    parser.add_argument('-p','--prefix', action="store", dest="prefix", help='The prefix to use for the file containing the links. The full name will contain the prefix and the domain.',required=False)
+    parser.add_argument('-n','--name', action="store", dest="filename", help='The name of the file containing the links. This option overrides -p/--prefix.',required=False)
+
+    args = parser.parse_args()
+
+    URL=args.URL
     
-parser = argparse.ArgumentParser(description='MTUOC program to get the links from a website.')
-parser.add_argument('-u','--url', action="store", dest="URL", help='The URL of the website to explore.',required=True)
-parser.add_argument('-p','--prefix', action="store", dest="prefix", help='The prefix to use for the file containing the links. The full name will contain the prefix and the domain.',required=False)
-parser.add_argument('-n','--name', action="store", dest="filename", help='The name of the file containing the links. This option overrides -p/--prefix.',required=False)
-
-args = parser.parse_args()
-
-URL=args.URL
-if not URL.startswith("http"): URL="http://"+URL
-
-if not args.filename==None:
-    outfile=args.filename
-elif not args.prefix==None:
-    domain = urlparse(URL).netloc
-    suffix=domain.replace(".","_")
-    outfile=args.prefix+"-"+suffix+".txt"
-else:
-    domain = urlparse(URL).netloc
-    suffix=domain.replace(".","_")
-    outfile="sitemap-"+suffix+".txt"
-
-
-
-response = requests.get(URL)
-
-if response.status_code == 200:
-    print('Web site exists')
-    URL=response.url
-else:
-    print('Web site does not exist') 
-    sys.exit()
-
-sortida=codecs.open(outfile,"w",encoding="utf-8")
-
-tree = sitemap_tree_for_homepage(URL)
-cont=0
-control=[]
-for page in tree.all_pages():
-    URL=page.url
-    if not URL in control:
-        sortida.write(page.url+"\n")
-        control.append(URL)
-        cont+=1
-
-if cont==0:
-    cadena="###URL###"
-    sortida.write(cadena+"\n")
-    sortida.write(URL+"\n")
+    if not args.filename==None:
+        outfile=args.filename
+    elif not args.prefix==None:
+        domain = urlparse(URL).netloc
+        suffix=domain.replace(".","_")
+        outfile=args.prefix+"-"+suffix+".txt"
+    else:
+        domain = urlparse(URL).netloc
+        suffix=domain.replace(".","_")
+        outfile="sitemap-"+suffix+".txt"
     
-    cadena="###Google###"
-    sortida.write(cadena+"\n")
-    googlelinks=searchGoogle(URL)
-    for gl in googlelinks:
-        sortida.write(gl+"\n")
+    get_sitemap(URL, outfile)
+    
+    
+
