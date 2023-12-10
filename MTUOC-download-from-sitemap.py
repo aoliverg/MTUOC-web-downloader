@@ -103,7 +103,7 @@ for linia in entrada:
     if not linia in links and not linia.startswith("#"):
         links.append(linia)
 
-
+contreplace=0
 moreelements=len(links)
 totaldownloaded=0
 while moreelements>0:
@@ -163,6 +163,11 @@ while moreelements>0:
             if not file_extension in htmlextensions:
                 fullfilename=fullfilename+".html"
             fullfilename=fullfilename.replace("?","_").replace("<","_")
+            if len(fullfilename)>256:
+                filename="replaced_filename_"+str(contreplace)+".html"
+                fullfilename=os.path.join(dir1,filename)
+                contreplace+=1
+                
             cadenalog.append(fullfilename)
             sortida=codecs.open(fullfilename,"w",encoding="utf-8")
             sortida.write(html+"\n")
